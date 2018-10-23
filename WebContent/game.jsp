@@ -1,32 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<%--
-Copyright (c) 2012, Andy Janata
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted
-provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions
-  and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of
-  conditions and the following disclaimer in the documentation and/or other materials provided
-  with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
-WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---%>
-<%--
-The main game page. This is almost entirely static HTML, other than ensuring that a session is
-created for the user now.
-
-@author Andy Janata (ajanata@socialgamer.net)
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="net.socialgamer.cah.data.GameOptions" %>
@@ -40,7 +12,7 @@ HttpSession hSession = request.getSession(true);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Pretend You're Xyzzy</title>
+<title>Cards Against Oakbank</title>
 <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/jquery.json.js"></script>
@@ -72,32 +44,12 @@ HttpSession hSession = request.getSession(true);
 
 <div id="welcome">
   <h1 tabindex="0">
-    Pretend You're <dfn style="border-bottom: 1px dotted black"
-    title="Xyzzy is an Artificial Unintelligence bot. You'll be making more sense than him in this game.">
-    Xyzzy</dfn>
+    Cards Against Oakbank
   </h1>
   <h3>A <a href="http://cardsagainsthumanity.com/">Cards Against Humanity</a> clone.</h3>
   <p>
-    This webapp is still in development. There will be bugs, but hopefully they won't affect gameplay
-    very much. To assist with development, <strong>all traffic on this server <em>may</em> be
-    logged.</strong>
+    This game is still in development. There will probably be bugs.
   </p>
-  <p>
-    If this is your first time playing, you may wish to read <a href="/">the changelog and list of
-    known issues</a>.
-  </p>
-  <p tabindex="0">Most recent update: 11 August 2014:</p>
-  <ul>
-    <li>Loading decks from <a href="http://www.cardcastgame.com/">Cardcast</a> is now supported in a
-    preview release. See <a href="https://github.com/ajanata/PretendYoureXyzzy/wiki/Cardcast">the
-    wiki</a> for instructions. A better UI will hopefully happen before too long, but you can see
-    how long it took to get any sort of custom deck loading implemented...</li>
-    <li>Please go make your own card sets there! It's a really cool site.</li>
-    <li><strong>If you submitted a card set which is currently hosted locally on PYX, please add it
-    to Cardcast and let me know when you have done so, so that I may remove it from the local list
-    to de-clutter the page.</strong> I will list Cardcast codes for previously-hosted decks for a
-    period of time so that users may continue to find them.</li>
-  </ul>
   <div id="nickbox">
     Nickname:
     <input type="text" id="nickname" value="" maxlength="30" role="textbox"
@@ -110,8 +62,7 @@ HttpSession hSession = request.getSession(true);
     <a href="http://www.cardsagainsthumanity.com/">cardsagainsthumanity.com</a>, where you can buy it
     or download and print it out yourself. It is distributed under a
     <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons - Attribution -
-    Noncommercial - Share Alike license</a>. This web version is in no way endorsed or sponsored by
-    cardsagainsthumanity.com. You may download the source code to this version from
+    Noncommercial - Share Alike license</a>. You may download the source code to this version from
     <a href="https://github.com/ajanata/PretendYoureXyzzy">GitHub</a>. For full license
     information, including information about included libraries, see the
     <a href="license.html">full license information</a>.
