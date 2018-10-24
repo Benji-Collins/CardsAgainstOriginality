@@ -4,10 +4,42 @@
 
 body {
   min-height: 640px;
-  background: #eee;
-  color: #000;
-  font-size: 12px;
+  background: #282a36;
+  color: #bcc3cd;
+  font-size: 1.3em;
   margin: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.indextitle {
+  font-family: 'Slabo 27px', serif;
+  color: #50fa7b;
+  text-align: center;
+  font-size: 72px;
+}
+
+.indexh2 {
+  text-align: center;
+  font-size: 60px;
+}
+
+.indexp {
+  text-align: center;
+}
+
+a {
+  color: #8be9fd;
+  text-decoration: none;
+}
+
+.indexbutton {
+  color: #ffb86c;
+  font-size: 2em;
+  text-align: center;
+  padding: 5px 5px;
+  cursor: pointer;
+  border: none;
+  background-color: #ffffff00;
 }
 
 .card, #game_list {

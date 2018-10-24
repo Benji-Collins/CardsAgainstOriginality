@@ -7,20 +7,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Cards Against Oakbank</title>
 <link rel="stylesheet" type="text/css" href="cah.css" media="screen" />
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px|Source+Sans+Pro" rel="stylesheet">
 </head>
 <body>
-<h1>
+<h1 class="indextitle">
   Cards Against Oakbank
 </h1>
-<h3>A Cards Against Humanity clone.</h3>
-<p>
-  This game is still in development. There will probably be bugs.
-</p>
-<p>
+<h2 class="indexh2">A Cards Against Humanity clone.</h2>
+<p class="indexbutton">
   <input type="button" value="Take me to the game!"
     onclick="window.location='game.jsp';" />
 </p>
-<p>
+<p class="indexp">
   Cards Against Oakbank is a Cards Against Humanity clone, which is available at
   <a href="http://www.cardsagainsthumanity.com/">cardsagainsthumanity.com</a>, where you can buy it
   or download and print it out yourself. It is based off of <a href="https://github.com/ajanata/PretendYoureXyzzy">Pretend You're Xyzzy</a>
