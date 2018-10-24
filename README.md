@@ -5,6 +5,8 @@ Cards Against Oakbank is a clone of [ajanata/PretendYoureXyzzy](https://github.c
 
 Cards Against Oakbank was simply made for my personal use. All license terms are exactly the same as the original project by ajanata. All original files/source code can be found on ajanata's repo.
 
+If you plan on using this repo for your own use, check the wiki pages (coming soon) for the correct commands for database install and building.
+
 ---
 
 You can play/test this game [here](http://cah.sneakysneaky.tk) but I can't make any guarantees as to whether it will work or not.
