@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Andy Janata
+ * Copyright (c) 2012-2018, Andy Janata
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -48,9 +48,13 @@ cah.log.init = function() {
  *          escaped automatically.
  * @param {string}
  *          opt_class Optional CSS class to use for this message.
+ * @param {boolean}
+ *          opt_allow_html Allow HTML to be used.
+ * @param {string}
+ *          opt_title Optional title text for span.
  */
-cah.log.status = function(text, opt_class) {
-  cah.log.status_with_game(null, text, opt_class);
+cah.log.status = function(text, opt_class, opt_allow_html, opt_title) {
+  cah.log.status_with_game(null, text, opt_class, opt_allow_html, opt_title);
 };
 
 /**
@@ -70,10 +74,13 @@ cah.log.status = function(text, opt_class) {
  *          opt_class Optional CSS class to use for this message.
  * @param {boolean}
  *          opt_allow_html Allow HTML to be used.
+ * @param {string}
+ *          opt_title Optional title text for span.
  */
-cah.log.status_with_game = function(game_or_id, text, opt_class, opt_allow_html) {
+cah.log.status_with_game = function(game_or_id, text, opt_class, opt_allow_html, opt_title) {
   var logElement;
-  if (game_or_id === null) {
+  // I think == null here would catch both of these cases and also be okay with game id 0 but...
+  if (game_or_id === null || game_or_id === undefined) {
     logElement = cah.log.log;
   } else {
     var game;
@@ -89,7 +96,12 @@ cah.log.status_with_game = function(game_or_id, text, opt_class, opt_allow_html)
   var scroll = (logElement.prop("scrollHeight") - logElement.height() - logElement
       .prop("scrollTop")) <= 5;
 
-  var node = $("<span></span><br/>");
+  var node;
+  if (opt_title) {
+    node = $("<span title ='" + opt_title + "'></span><br/>");
+  } else {
+    node = $("<span></span><br/>");
+  }
   var full_msg = "[" + new Date().toLocaleTimeString() + "] " + text + "\n";
   if (opt_allow_html) {
     $(node[0]).html(full_msg);
@@ -198,5 +210,19 @@ cah.log.debug = function(text, opt_obj) {
     } else {
       cah.log.status("DEBUG: " + text, "debug");
     }
+  }
+};
+
+/**
+ * Get the title text to use for the given idcode, or a null if there is no idcode.
+ * 
+ * @param {string}
+ *          idcode ID code, or logical false to not have a title.
+ */
+cah.log.getTitleForIdCode = function(idcode) {
+  if (idcode) {
+    return "Verification code: " + idcode;
+  } else {
+    return null;
   }
 };

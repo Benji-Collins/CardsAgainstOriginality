@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Andy Janata
+ * Copyright (c) 2012-2018, Andy Janata
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -40,8 +40,13 @@ $(document).ready(function() {
     $("#nickname").val($.cookie("nickname"));
   }
   $("#nicknameconfirm").click(nicknameconfirm_click);
-  $("#nickbox").keyup(nickbox_keyup);
-  $("#nickbox").focus();
+  $("#nickname").keyup(nickname_keyup);
+  $("#nickname").focus();
+  if (document.location.protocol == "https:" || cah.INSECURE_ID_ALLOWED) {
+    $("#idcode").prop("disabled", false);
+    // re-use existing handler
+    $("#idcode").keyup(nickname_keyup);
+  }
 
   $(".chat", $("#tab-global")).keyup(chat_keyup($(".chat_submit", $("#tab-global"))));
   $(".chat_submit", $("#tab-global")).click(chatsubmit_click(null, $("#tab-global")));
@@ -82,7 +87,7 @@ $(window).blur(function() {
  * @param {jQuery.Event}
  *          e
  */
-function nickbox_keyup(e) {
+function nickname_keyup(e) {
   if (e.which == 13) {
     $("#nicknameconfirm").click();
     e.preventDefault();
@@ -94,11 +99,16 @@ function nickbox_keyup(e) {
  */
 function nicknameconfirm_click() {
   var nickname = $.trim($("#nickname").val());
-  $.cookie("nickname", nickname, {
-    domain : cah.COOKIE_DOMAIN,
-    expires : 365
-  });
-  cah.Ajax.build(cah.$.AjaxOperation.REGISTER).withNickname(nickname).run();
+  cah.setCookie("nickname", nickname);
+  var builder = cah.Ajax.build(cah.$.AjaxOperation.REGISTER).withNickname(nickname);
+  var idCode = $.trim($("#idcode").val());
+  if (idCode) {
+    builder.withIdCode(idCode);
+  }
+  if (!cah.noPersistentId && cah.persistentId) {
+    builder.withPersistentId(cah.persistentId);
+  }
+  builder.run();
 }
 
 /**
@@ -152,7 +162,12 @@ function chatsubmit_click(game_id, parent_element) {
           ajax = cah.Ajax.build(cah.$.AjaxOperation.CHAT);
         }
         ajax = ajax.withEmote(false).withMessage(text);
-        cah.log.status_with_game(game_id, "<" + cah.nickname + "> " + text);
+        var clazz = '';
+        if (cah.sigil == cah.$.Sigil.ADMIN) {
+          clazz = 'admin';
+        }
+        cah.log.status_with_game(game_id, "<" + cah.sigil + cah.nickname + "> " + text, clazz,
+            false, cah.log.getTitleForIdCode(cah.idcode));
         break;
       case 'me':
         if (game_id !== null) {
@@ -161,7 +176,12 @@ function chatsubmit_click(game_id, parent_element) {
           ajax = cah.Ajax.build(cah.$.AjaxOperation.CHAT);
         }
         ajax = ajax.withEmote(true).withMessage(text);
-        cah.log.status_with_game(game_id, "* " + cah.nickname + " " + text);
+        var clazz = '';
+        if (cah.sigil == cah.$.Sigil.ADMIN) {
+          clazz = 'admin';
+        }
+        cah.log.status_with_game(game_id, "* " + cah.sigil + cah.nickname + " " + text, clazz,
+            false, cah.log.getTitleForIdCode(cah.idcode));
         break;
       case 'wall':
         ajax = cah.Ajax.build(cah.$.AjaxOperation.CHAT).withWall(true).withMessage(text);
@@ -214,6 +234,13 @@ function chatsubmit_click(game_id, parent_element) {
           ajax = cah.Ajax.build(cah.$.AjaxOperation.CARDCAST_LIST_CARDSETS).withGameId(game_id);
         } else {
           cah.log.error("This command only works in a game.");
+        }
+        break;
+      case 'whois':
+        ajax = cah.Ajax.build(cah.$.AjaxOperation.WHOIS).withNickname(text.split(' ')[0]);
+        // so we can show it in the right place; the server ignores this
+        if (game_id !== null) {
+          ajax = ajax.withGameId(game_id);
         }
         break;
       default:
@@ -332,7 +359,7 @@ cah.removeItems = function(listId) {
  */
 cah.setCookie = function(name, value) {
   return $.cookie(name, value, {
-    // domain : cah.COOKIE_DOMAIN,
+    domain : cah.COOKIE_DOMAIN,
     expires : 365
   });
 };
@@ -344,7 +371,9 @@ cah.setCookie = function(name, value) {
  *          name The name of the cookie.
  */
 cah.removeCookie = function(name) {
-  $.removeCookie(name);
+  $.removeCookie(name, {
+    domain : cah.COOKIE_DOMAIN
+  });
 };
 
 /**
@@ -372,6 +401,8 @@ function app_resize() {
   $("#bottom").height(bottomHeight);
   $("#info_area").height(bottomHeight);
   $("#tabs").height(bottomHeight);
+  $("#tab-preferences").height(bottomHeight - 45);
+  $("#tab-gamelist-filters").height(bottomHeight - 45);
 
   // global chat
   do_app_resize(chat, log);
@@ -396,4 +427,20 @@ function do_app_resize(chatElement, logElement) {
   chatElement.width((chatWidth - 42) + 'px');
   var bottomHeight = $(window).height() - $("#main").height() - $("#menubar").height() - 29;
   logElement.height(bottomHeight - chatElement.height() - 40);
+}
+
+cah.logUserPermalinks = function(data) {
+  var linkMsg = "";
+  if (cah.$.AjaxResponse.SESSION_PERMALINK in data) {
+    linkMsg += "<a href='" + data[cah.$.AjaxResponse.SESSION_PERMALINK]
+        + "'rel='noopener' target='_blank'>Permanent link to games you play this session.</a> ";
+  }
+  if (cah.$.AjaxResponse.USER_PERMALINK in data && !cah.noPersistentId) {
+    linkMsg += "<a href='"
+        + data[cah.$.AjaxResponse.USER_PERMALINK]
+        + "'rel='noopener' target='_blank'>Permanent link to every time you've played on this device.</a> ";
+  }
+  if ("" != linkMsg) {
+    cah.log.status(linkMsg, undefined, true);
+  }
 }

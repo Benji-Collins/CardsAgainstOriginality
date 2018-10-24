@@ -1,39 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<%--
-Copyright (c) 2012, Andy Janata
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted
-provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this list of conditions
-  and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this list of
-  conditions and the following disclaimer in the documentation and/or other materials provided
-  with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
-WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---%>
-<%--
-Administration tools.
-
-@author Andy Janata (ajanata@socialgamer.net)
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.google.inject.Injector" %>
 <%@ page import="com.google.inject.Key" %>
 <%@ page import="com.google.inject.TypeLiteral" %>
 <%@ page import="net.socialgamer.cah.RequestWrapper" %>
 <%@ page import="net.socialgamer.cah.StartupUtils" %>
+<%@ page import="net.socialgamer.cah.CahModule.Admins" %>
 <%@ page import="net.socialgamer.cah.CahModule.BanList" %>
-<%@ page import="net.socialgamer.cah.Constants" %>
 <%@ page import="net.socialgamer.cah.Constants.DisconnectReason" %>
 <%@ page import="net.socialgamer.cah.Constants.LongPollEvent" %>
 <%@ page import="net.socialgamer.cah.Constants.LongPollResponse" %>
@@ -50,13 +23,13 @@ Administration tools.
 
 <%
 RequestWrapper wrapper = new RequestWrapper(request);
-if (!Constants.ADMIN_IP_ADDRESSES.contains(wrapper.getRemoteAddr())) {
+ServletContext servletContext = pageContext.getServletContext();
+Injector injector = (Injector) servletContext.getAttribute(StartupUtils.INJECTOR);
+Set<String> admins = injector.getInstance(Key.get(new TypeLiteral<Set<String>>(){}, Admins.class));
+if (!admins.contains(wrapper.getRemoteAddr())) {
   response.sendError(403, "Access is restricted to known hosts");
   return;
 }
-
-ServletContext servletContext = pageContext.getServletContext();
-Injector injector = (Injector) servletContext.getAttribute(StartupUtils.INJECTOR);
 
 ConnectedUsers connectedUsers = injector.getInstance(ConnectedUsers.class);
 Set<String> banList = injector.getInstance(Key.get(new TypeLiteral<Set<String>>(){}, BanList.class));
@@ -100,7 +73,7 @@ if (banParam != null) {
    user.enqueueMessage(qm);
 
    connectedUsers.removeUser(user, DisconnectReason.BANNED);
-   banList.add(user.getHostName());
+   banList.add(user.getHostname());
   }
   response.sendRedirect("admin.jsp");
   return;
@@ -214,7 +187,7 @@ User list:
 	  %>
 	  <tr>
 	    <td><%= u.getNickname() %></td>
-	    <td><%= u.getHostName() %></td>
+	    <td><%= u.getHostname() %></td>
 	    <td>
         <a href="?kick=<%= u.getNickname() %>">Kick</a>
         <a href="?ban=<%= u.getNickname() %>">Ban</a>

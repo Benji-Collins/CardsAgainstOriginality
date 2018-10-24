@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.google.inject.Injector" %>
+<%@ page import="com.google.inject.Key" %>
+<%@ page import="com.google.inject.TypeLiteral" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="net.socialgamer.cah.CahModule.AllowBlankCards" %>
+<%@ page import="net.socialgamer.cah.RequestWrapper" %>
+<%@ page import="net.socialgamer.cah.StartupUtils" %>
 <%@ page import="net.socialgamer.cah.data.GameOptions" %>
 <%
 // Ensure a session exists for the user.
 @SuppressWarnings("unused")
 HttpSession hSession = request.getSession(true);
+RequestWrapper wrapper = new RequestWrapper(request);
+ServletContext servletContext = pageContext.getServletContext();
+Injector injector = (Injector) servletContext.getAttribute(StartupUtils.INJECTOR);
+boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(){}, AllowBlankCards.class));
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -13,11 +23,12 @@ HttpSession hSession = request.getSession(true);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Cards Against Oakbank</title>
-<script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/jquery-migrate-1.2.1.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/jquery.json.js"></script>
 <script type="text/javascript" src="js/QTransform.js"></script>
-<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/cah.js"></script>
 <script type="text/javascript" src="js/cah.config.js"></script>
 <%-- cah must be first, ajax must be before app. app probably has to be last. --%>
@@ -37,10 +48,9 @@ HttpSession hSession = request.getSession(true);
 <script type="text/javascript" src="js/cah.ajax.handlers.js"></script>
 <script type="text/javascript" src="js/cah.app.js"></script>
 <link rel="stylesheet" type="text/css" href="cah.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="jquery-ui.css" media="screen" />
-<jsp:include page="analytics.jsp" />
+<link rel="stylesheet" type="text/css" href="jquery-ui.min.css" media="screen" />
 </head>
-<body>
+<body id="gamebody">
 
 <div id="welcome">
   <h1 tabindex="0">
@@ -51,22 +61,18 @@ HttpSession hSession = request.getSession(true);
     This game is still in development. There will probably be bugs.
   </p>
   <div id="nickbox">
-    Nickname:
+    <label for="nickname">Nickname:</label>
     <input type="text" id="nickname" value="" maxlength="30" role="textbox"
-        aria-label="Enter your nickname." />
+        aria-label="Enter your nickname." data-lpignore="true" />
+    <label for="idcode">
+    <dfn title="Only available via HTTPS. Provide a secret identification code to positively identify yourself in the chat.">
+    Optional identification code:</dfn></label>
+    <input type="password" id="idcode" value="" maxlength="100" disabled="disabled"
+        aria-label="Optionally enter an identification code." />
+    <a href="https://github.com/ajanata/PretendYoureXyzzy/wiki/Identification-Codes">(Help)</a>
     <input type="button" id="nicknameconfirm" value="Set" />
     <span id="nickbox_error" class="error"></span>
   </div>
-  <p>
-    Pretend You're Xyzzy is a Cards Against Humanity clone, which is available at
-    <a href="http://www.cardsagainsthumanity.com/">cardsagainsthumanity.com</a>, where you can buy it
-    or download and print it out yourself. It is distributed under a
-    <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons - Attribution -
-    Noncommercial - Share Alike license</a>. You may download the source code to this version from
-    <a href="https://github.com/ajanata/PretendYoureXyzzy">GitHub</a>. For full license
-    information, including information about included libraries, see the
-    <a href="license.html">full license information</a>.
-  </p>
 </div>
 
 <div id="canvas" class="hide">
@@ -74,7 +80,8 @@ HttpSession hSession = request.getSession(true);
     <div id="menubar_left">
       <input type="button" id="refresh_games" class="hide" value="Refresh Games" />
       <input type="button" id="create_game" class="hide" value="Create Game" />
-      <input type="text" id="filter_games" class="hide" placeholder="Filter games by keyword" />
+      <input type="text" id="filter_games" class="hide" placeholder="Filter games by keyword"
+          data-lpignore="true"/>
 
       <input type="button" id="leave_game" class="hide" value="Leave Game" />
       <input type="button" id="start_game" class="hide" value="Start Game" />
@@ -107,12 +114,24 @@ HttpSession hSession = request.getSession(true);
     <div id="tab-preferences">
       <input type="button" value="Save" onclick="cah.Preferences.save();" />
       <input type="button" value="Revert" onclick="cah.Preferences.load();" />
-      <label for="hide_connect_quit">Hide connect and quit events: </label>
+      <label for="hide_connect_quit">
+        <dfn
+          title="Even with this unselected, you might not see these events if the server is configured to not send them.">
+            Hide connect and quit events:
+        </dfn>
+      </label>
       <input type="checkbox" id="hide_connect_quit" />
       <br />
       <label for="ignore_list">Chat ignore list, one name per line:</label>
       <br/>
       <textarea id="ignore_list" style="width: 200px; height: 150px"></textarea>
+      <br/>
+      <label for="no_persistent_id">
+        <dfn title="Even with this selected, your card plays for a single session will be tracked.">
+          Opt-out of card play tracking between sessions:
+        </dfn>
+      </label>
+      <input type="checkbox" id="no_persistent_id" />
     </div>
     <div id="tab-gamelist-filters">
       You will have to click Refresh Games after saving any changes here.
@@ -156,7 +175,8 @@ HttpSession hSession = request.getSession(true);
     </div>
     <div id="tab-global">
       <div class="log"></div>
-      <input type="text" class="chat" maxlength="200" aria-label="Type here to chat." />
+      <input type="text" class="chat" maxlength="200" aria-label="Type here to chat."
+          data-lpignore="true" />
       <input type="button" class="chat_submit" value="Chat" />
     </div>
   </div>
@@ -206,7 +226,7 @@ HttpSession hSession = request.getSession(true);
         <br/>
         <span class="watermark"></span>
 	    </div>
-	    <div class="logo_text">Pretend You're Xyzzy</div>
+	    <div class="logo_text">Cards Againt Oakbank</div>
 	  </div>
     <div class="card_metadata">
       <div class="draw hide">DRAW <div class="card_number"></div></div>
@@ -234,7 +254,7 @@ HttpSession hSession = request.getSession(true);
         <br/>
         <span class="watermark"></span>
 	    </div>
-	    <div class="logo_text">Pretend You're Xyzzy</div>
+	    <div class="logo_text">Cards Against Oakbank</div>
 	  </div>
 	</div>
 </div>
@@ -367,30 +387,46 @@ HttpSession hSession = request.getSession(true);
       </select>
       Spectators can watch and chat, but not actually play. Not even as Czar.
       <br/>
-      <input type="checkbox" checked="checked" id="use_timer_template" class="use_timer"
-          title="Players will be skipped if they have not played within a reasonable amount of time."
-          aria-label="Use idle timer. Players will be skipped if they have not played within a reasonable amount of time."/>
-      <label id="use_timer_template_label" for="use_timer_template"
-          title="Players will be skipped if they have not played within a reasonable amount of time.">
-          Use idle timer.
+      <label id="timer_multiplier_template_label" for="timer_multiplier_template"
+          title="Players will be skipped if they have not played within a reasonable amount of time. This is the multiplier to apply to the default timeouts, or Unlimited to disable timeouts.">
+          Idle timer multiplier:
       </label>
+      <select id="timer_multiplier_template" class="timer_multiplier"
+          title="Players will be skipped if they have not played within a reasonable amount of time. This is the multiplier to apply to the default timeouts, or Unlimited to disable timeouts."
+          aria-label="Players will be skipped if they have not played within a reasonable amount of time. This is the multiplier to apply to the default timeouts, or Unlimited to disable timeouts.">
+      	<option value="0.25x">0.25x</option>
+      	<option value="0.5x">0.5x</option>
+      	<option value="0.75x">0.75x</option>
+      	<option selected="selected" value="1x">1x</option>
+      	<option value="1.25x">1.25x</option>
+      	<option value="1.5x">1.5x</option>
+      	<option value="1.75x">1.75x</option>
+      	<option value="2x">2x</option>
+      	<option value="2.5x">2.5x</option>
+      	<option value="3x">3x</option>
+      	<option value="4x">4x</option>
+      	<option value="5x">5x</option>
+      	<option value="10x">10x</option>
+      	<option value="Unlimited">Unlimited</option>
+      </select>
       <br/>
       <fieldset class="card_sets">
         <legend>Card Sets</legend>
-        Select at least one of: <span class="base_card_sets"></span>
-        <br/>
-        Select any number of: <span class="extra_card_sets"></span>
+        <span class="base_card_sets"></span>
+        <span class="extra_card_sets"></span>
       </fieldset>
-      <br/>
-      <label id="blanks_limit_label" title="Blank cards allow a player to type in their own answer.">
-        Also include <select id="blanks_limit_template" class="blanks_limit">
-        <%
-          for (int i = GameOptions.MIN_BLANK_CARD_LIMIT; i <= GameOptions.MAX_BLANK_CARD_LIMIT; i++) {
-        %>
-          <option <%= i == GameOptions.DEFAULT_BLANK_CARD_LIMIT ? "selected='selected' " : "" %>value="<%= i %>"><%= i %></option>
-        <% } %>
-        </select> blank white cards.
-      </label>
+      <% if (allowBlankCards) { %>
+        <br/>
+        <label id="blanks_limit_label" title="Blank cards allow a player to type in their own answer.">
+          Also include <select id="blanks_limit_template" class="blanks_limit">
+          <%
+            for (int i = GameOptions.MIN_BLANK_CARD_LIMIT; i <= GameOptions.MAX_BLANK_CARD_LIMIT; i++) {
+          %>
+            <option <%= i == GameOptions.DEFAULT_BLANK_CARD_LIMIT ? "selected='selected' " : "" %>value="<%= i %>"><%= i %></option>
+          <% } %>
+          </select> blank white cards.
+        </label>
+      <% } %>
       <br/>
       <label id="game_password_template_label" for="game_password_template">Game password:</label>
       <input type="text" id="game_password_template" class="game_password"

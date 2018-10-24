@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Andy Janata
+ * Copyright (c) 2012-2018, Andy Janata
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -95,7 +95,7 @@ cah.Game = function(id) {
   $("#game_password_template_label", this.optionsElement_).attr("for", "game_password_" + id);
   $("#game_hide_password_template_label", this.optionsElement_).attr("for",
       "game_hide_password_" + id);
-  $("#use_timer_template_label", this.optionsElement_).attr("for", "use_timer_" + id);
+  $("#timer_multiplier_template_label", this.optionsElement_).attr("for", "timer_multiplier_" + id);
 
   $("#score_limit_template", this.optionsElement_).attr("id", "score_limit_" + id);
   $("#player_limit_template", this.optionsElement_).attr("id", "player_limit_" + id);
@@ -104,7 +104,7 @@ cah.Game = function(id) {
   $("#game_password_template", this.optionsElement_).attr("id", "game_password_" + id);
   $("#game_fake_password_template", this.optionsElement_).attr("id", "game_fake_password_" + id);
   $("#game_hide_password_template", this.optionsElement_).attr("id", "game_hide_password_" + id);
-  $("#use_timer_template", this.optionsElement_).attr("id", "use_timer_" + id);
+  $("#timer_multiplier_template", this.optionsElement_).attr("id", "timer_multiplier_" + id);
   $("#blanks_limit_template", this.optionsElement_).attr("id", "blanks_limit_" + id);
 
   for ( var key in cah.CardSet.byWeight) {
@@ -307,7 +307,7 @@ cah.Game = function(id) {
   $(".game_show_options", this.element_).click(cah.bind(this, this.showOptionsClick_));
   $("select", this.optionsElement_).change(cah.bind(this, this.optionChanged_));
   $("input", this.optionsElement_).blur(cah.bind(this, this.optionChanged_));
-  $(".use_timer", this.optionsElement_).change(cah.bind(this, this.optionChanged_));
+  $(".timer_multiplier", this.optionsElement_).change(cah.bind(this, this.optionChanged_));
   $(".card_set", this.optionsElement_).change(cah.bind(this, this.optionChanged_));
   $(".game_hide_password", this.optionsElement_).click(cah.bind(this, this.showOrHidePassword_));
 
@@ -321,8 +321,10 @@ cah.Game = function(id) {
  * 
  * @param {Number}
  *          gameId The game id.
+ * @param {Object}
+ *          data The data returned by the server.
  */
-cah.Game.joinGame = function(gameId) {
+cah.Game.joinGame = function(gameId, data) {
   cah.Ajax.build(cah.$.AjaxOperation.GET_GAME_INFO).withGameId(gameId).run();
   cah.Ajax.build(cah.$.AjaxOperation.GET_CARDS).withGameId(gameId).run();
   cah.Ajax.build(cah.$.AjaxOperation.CARDCAST_LIST_CARDSETS).withGameId(gameId).run();
@@ -330,9 +332,27 @@ cah.Game.joinGame = function(gameId) {
   var game = new cah.Game(gameId);
   cah.currentGames[gameId] = game;
   game.insertIntoDocument();
+  game.showGamePermalink_(data);
 
   cah.updateHash('game=' + gameId);
+  if (!cah.GAME_CHAT_ENABLED) {
+    cah.log.status_with_game(game, "IMPORTANT: Game chat has been disabled.", "error");
+  }
 };
+
+/**
+ * Show the permanent link to this game, if it is in the provider server data.
+ * 
+ * @param {Object}
+ *          data The data returned by the server, from either an AJAX call or an long poll response.
+ */
+cah.Game.prototype.showGamePermalink_ = function(data) {
+  if (cah.$.AjaxResponse.GAME_PERMALINK in data) {
+    cah.log.status_with_game(this, "<a href='" + data[cah.$.AjaxResponse.GAME_PERMALINK] +
+        "' rel='noopener' target='_blank'>Permanent link to this game's rounds.</a>", undefined,
+        true);
+  }
+}
 
 /**
  * Toggle showing the previous round result.
@@ -853,11 +873,8 @@ cah.Game.prototype.updateGameStatus = function(data) {
   $(".player_limit", this.optionsElement_).val(options[cah.$.GameOptionData.PLAYER_LIMIT]);
   $(".spectator_limit", this.optionsElement_).val(options[cah.$.GameOptionData.SPECTATOR_LIMIT]);
   $(".game_password", this.optionsElement_).val(options[cah.$.GameOptionData.PASSWORD]);
-  if (options[cah.$.GameOptionData.USE_TIMER]) {
-    $(".use_timer", this.optionsElement_).attr("checked", "checked");
-  } else {
-    $(".use_timer", this.optionsElement_).removeAttr("checked");
-  }
+  $(".timer_multiplier", this.optionsElement_).val(options[cah.$.GameOptionData.TIMER_MULTIPLIER]);
+
   var cardSetIds = options[cah.$.GameOptionData.CARD_SETS];// .split(',');
   $(".card_set", this.optionsElement_).removeAttr("checked");
   for ( var key in cardSetIds) {
@@ -991,8 +1008,13 @@ cah.Game.prototype.roundComplete = function(data) {
   var scoreCard = this.scoreCards_[roundWinner];
   $(scoreCard.getElement()).addClass("selected");
   $(".confirm_card", this.element_).attr("disabled", "disabled");
-  cah.log.status_with_game(this, roundWinner + " wins the round.  The next round will begin in "
-      + (data[cah.$.LongPollResponse.INTERMISSION] / 1000) + " seconds.");
+  var msg = roundWinner + " wins the round.  The next round will begin in "
+      + (data[cah.$.LongPollResponse.INTERMISSION] / 1000) + " seconds.";
+  if (cah.$.LongPollResponse.ROUND_PERMALINK in data) {
+    msg = msg + " <a href='" + data[cah.$.LongPollResponse.ROUND_PERMALINK]
+        + "' rel='noopener' target='_blank'>Permalink</a>";
+  }
+  cah.log.status_with_game(this, msg, undefined, true);
 
   // update the previous round display
   $(".game_last_round_winner", this.element_).text(roundWinner);
@@ -1403,6 +1425,7 @@ cah.Game.prototype.stateChange = function(data) {
       this.hideOptions_();
       this.refreshGameStatus();
       this.setBlackCard(data[cah.$.LongPollResponse.BLACK_CARD]);
+      this.showGamePermalink_(data);
       break;
 
     case cah.$.GameState.JUDGING:
@@ -1482,7 +1505,8 @@ cah.Game.prototype.optionChanged_ = function(e) {
   options[cah.$.GameOptionData.SPECTATOR_LIMIT] = $(".spectator_limit", this.optionsElement_).val();
   options[cah.$.GameOptionData.PASSWORD] = $(".game_password", this.optionsElement_).val();
   options[cah.$.GameOptionData.BLANKS_LIMIT] = $(".blanks_limit", this.optionsElement_).val();
-  options[cah.$.GameOptionData.USE_TIMER] = !!$('.use_timer', this.optionsElement_).attr('checked');
+  options[cah.$.GameOptionData.TIMER_MULTIPLIER] = $('.timer_multiplier', this.optionsElement_)
+      .val();
 
   cah.Ajax.build(cah.$.AjaxOperation.CHANGE_GAME_OPTIONS).withGameId(this.id_).withGameOptions(
       options).run();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Andy Janata All rights reserved.
+ * Copyright (c) 2012-2018, Andy Janata All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted
  * provided that the following conditions are met:
@@ -92,30 +92,52 @@ cah.longpoll.EventHandlers[cah.$.LongPollEvent.BANNED] = function() {
 };
 
 cah.longpoll.EventHandlers[cah.$.LongPollEvent.CHAT] = function(data) {
+  cah.longpoll.showChat_(data, false);
+};
+
+cah.longpoll.EventHandlers[cah.$.LongPollEvent.FILTERED_CHAT] = function(data) {
+  cah.longpoll.showChat_(data, true);
+};
+
+cah.longpoll.showChat_ = function(data, wasFiltered) {
   var clazz = undefined;
+  var idcode = data[cah.$.LongPollResponse.ID_CODE];
+  var title = cah.log.getTitleForIdCode(idcode);
+  var sigil = data[cah.$.LongPollResponse.SIGIL];
   var from = data[cah.$.LongPollResponse.FROM];
+  var who = sigil + from;
   var show = !cah.ignoreList[from];
+  var message = data[cah.$.LongPollResponse.MESSAGE];
   var game = null;
-  if (data[cah.$.LongPollResponse.FROM_ADMIN]) {
+  if (sigil == cah.$.Sigil.ADMIN) {
     clazz = "admin";
     show = true;
   }
   if (data[cah.$.LongPollResponse.WALL]) {
     // treat these specially
-    cah.log.everyWindow(
-        "Global message from " + from + ": " + data[cah.$.LongPollResponse.MESSAGE], clazz);
+    cah.log.everyWindow("Global message from " + who + ": " + message, clazz, false, title);
   } else {
     if (cah.$.LongPollResponse.GAME_ID in data) {
       game = data[cah.$.LongPollResponse.GAME_ID];
     }
+    if (wasFiltered) {
+      clazz = "error";
+      show = true;
+      // there might be a game id that we're not in
+      if (cah.$.LongPollResponse.GAME_ID in data) {
+        message = "(In game " + game + ") " + message;
+        // always show this in global chat since we're probably not in that game.
+        game = null;
+      }
+      message = "(Filtered) " + message;
+    }
 
     // don't display our own chat
     if (from != cah.nickname && show) {
-      var message = data[cah.$.LongPollResponse.MESSAGE];
       if (data[cah.$.LongPollResponse.EMOTE]) {
-        cah.log.status_with_game(game, "* " + from + " " + message, clazz);
+        cah.log.status_with_game(game, "* " + who + " " + message, clazz, false, title);
       } else {
-        cah.log.status_with_game(game, "<" + from + "> " + message, clazz);
+        cah.log.status_with_game(game, "<" + who + "> " + message, clazz, false, title);
       }
     }
   }
