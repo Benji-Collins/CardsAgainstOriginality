@@ -9,6 +9,6 @@ If you plan on using this repo for your own use, check the wiki pages (coming so
 
 ---
 
-You can play/test this game [here](http://cah.sneakysneaky.tk) but I can't make any guarantees as to whether it will work or not.
+You can play/test this game [here](http://cao.sneakysneaky.tk) but I can't make any guarantees as to whether it will work or not.
 
 Please dont make any pull requests/issues here as this is an unofficial fork/clone. Please had to the original repo for that.
