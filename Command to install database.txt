@@ -1,1 +1,0 @@
-psql -h localhost -d cahdb -U pyx -f cah_cards.sql
