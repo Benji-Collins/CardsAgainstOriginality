@@ -812,10 +812,10 @@ cah.Game.prototype.removeCardcastDeck = function(data) {
  *          data Array of CardSetDatas.
  */
 cah.Game.prototype.listCardcastDecks = function(cardSets) {
-  cah.log.status_with_game(this, "The following <a target='_blank'"
-      + " href='http://www.cardcastgame.com'>Cardcast</a> decks are in use in this game (<a"
-      + " target='_blank' href='https://github.com/ajanata/PretendYoureXyzzy/wiki/Cardcast'>"
-      + "instructions</a>):", 'admin', true);
+  cah.log.status_with_game(this, "Type <a class='message'>/addcardcast code</a> to add a <a target='_blank'"
+      + " href='http://www.cardcastgame.com'>Cardcast</a> deck to the game. "
+      + "Try <a class='message'>/addcardcast MMUSJ</a> to add the Cards Against The World pack."
+      + "", 'admin', true);
   for ( var key in cardSets) {
     var cardSetData = cardSets[key];
     this.displayCardcastDeckMessage_(cardSetData, "In use");
@@ -833,9 +833,8 @@ cah.Game.prototype.listCardcastDecks = function(cardSets) {
  */
 cah.Game.prototype.displayCardcastDeckMessage_ = function(deckInfo, verb) {
   var code = ("00000" + (-1 * deckInfo[cah.$.CardSetData.ID]).toString(36).toUpperCase()).slice(-5);
-  var str = verb + ": Cardcast deck '" + deckInfo[cah.$.CardSetData.CARD_SET_NAME]
-      + "' (code: <a target='_blank' href='http://www.cardcastgame.com/browse/deck/" + code + "'> "
-      + code + "</a>), with " + deckInfo[cah.$.CardSetData.BLACK_CARDS_IN_DECK]
+  var str = verb + deckInfo[cah.$.CardSetData.CARD_SET_NAME]
+      + ", with " + deckInfo[cah.$.CardSetData.BLACK_CARDS_IN_DECK]
       + " black cards and " + deckInfo[cah.$.CardSetData.WHITE_CARDS_IN_DECK] + " white cards.";
   cah.log.status_with_game(this, str, 'admin', true);
 };
