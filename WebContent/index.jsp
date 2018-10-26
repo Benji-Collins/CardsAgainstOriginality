@@ -9,7 +9,7 @@
       min-height: 640px;
       background: #282a36;
       color: #bcc3cd;
-      font-size: 1.3em;
+      font-size: 12px;
       margin: 0;
       font-family: 'Source Sans Pro', sans-serif;
     }
