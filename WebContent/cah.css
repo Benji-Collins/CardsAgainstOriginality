@@ -1,18 +1,6 @@
 #gamebody {
   overflow: hidden;
 }
-body {
-  min-height: 640px;
-  background: #282a36;
-  color: #bcc3cd;
-  font-size: 1.3em;
-  margin: 0;
-  font-family: 'Source Sans Pro', sans-serif;
-}
-a {
-  color: #8be9fd;
-  text-decoration: none;
-}
 .card, #game_list {
   font-family: "helvetica neue", helvetica, Arial, sans-serif;
 }
@@ -64,13 +52,6 @@ h2,h3,h4 {
 #menubar_right {
   float: right;
 }
-
-#nickbox {
-  border: 1px solid black;
-  display: inline;
-  padding: 5px;
-}
-
 #canvas {
   height: 533px;
   overflow: none;
@@ -248,14 +229,6 @@ h2,h3,h4 {
   margin: 0px;
   padding: 0px;
   font-size: 14px;
-}
-
-span.error {
-  color: red;
-}
-
-span.debug, span.admin {
-  color: blue;
 }
 
 .card {

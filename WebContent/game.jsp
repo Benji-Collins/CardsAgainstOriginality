@@ -31,9 +31,6 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/cah.js"></script>
 <script type="text/javascript" src="js/cah.config.js"></script>
-<%-- cah must be first, ajax must be before app. app probably has to be last. --%>
-<%-- TODO make this be dynamic with looking at the filesystem and using jquery --%>
-<%-- except that is nontrivial thanks to dependency ordering -_- --%>
 <script type="text/javascript" src="js/cah.constants.js"></script>
 <script type="text/javascript" src="js/cah.log.js"></script>
 <script type="text/javascript" src="js/cah.gamelist.js"></script>
@@ -49,27 +46,65 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <script type="text/javascript" src="js/cah.app.js"></script>
 <link rel="stylesheet" type="text/css" href="cah.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="jquery-ui.min.css" media="screen" />
+<style>
+body {
+  min-height: 640px;
+  background: #282a36;
+  color: #bcc3cd;
+  font-size: 1.3em;
+  margin: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.title {
+  font-family: 'Slabo 27px', serif;
+  color: #50fa7b;
+  text-align: center;
+  font-size: 100px;
+  margin-bottom: 0px;
+  margin-top: 60px;
+}
+a {
+  color: #8be9fd;
+  text-decoration: none;
+}
+.message {
+  color: #ffb86c;
+  text-decoration: none;
+  cursor: default;
+}
+.subtitle {
+  text-align: center;
+  font-size: 40px;
+  margin-top: 0px;
+}
+#nickbox {
+  border: 1px solid white;
+  display: inline;
+  padding: 5px;
+  background-color: #ffffff00;
+}
+span.error {
+  color: #ff5555;
+}
+span.debug, span.admin {
+  color: #bcc3cd;
+}
+</style>
 </head>
 <body id="gamebody">
 
 <div id="welcome">
-  <h1 tabindex="0">
+  <p tabindex="0" class="title">
     Cards Against Oakbank
-  </h1>
-  <h3>A <a href="http://cardsagainsthumanity.com/">Cards Against Humanity</a> clone.</h3>
+  </p>
+  <p class="subtitle">A Cards Against Humanity clone.</p>
   <p>
     This game is still in development. There will probably be bugs.
   </p>
   <div id="nickbox">
     <label for="nickname">Nickname:</label>
-    <input type="text" id="nickname" value="" maxlength="30" role="textbox"
+    <input type="text" id="nickname" value="" maxlength="20" role="textbox"
         aria-label="Enter your nickname." data-lpignore="true" />
-    <label for="idcode">
-    <dfn title="Only available via HTTPS. Provide a secret identification code to positively identify yourself in the chat.">
-    Optional identification code:</dfn></label>
-    <input type="password" id="idcode" value="" maxlength="100" disabled="disabled"
-        aria-label="Optionally enter an identification code." />
-    <a href="https://github.com/ajanata/PretendYoureXyzzy/wiki/Identification-Codes">(Help)</a>
     <input type="button" id="nicknameconfirm" value="Set" />
     <span id="nickbox_error" class="error"></span>
   </div>
