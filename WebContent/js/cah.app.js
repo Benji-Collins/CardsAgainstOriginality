@@ -166,7 +166,7 @@ function chatsubmit_click(game_id, parent_element) {
         if (cah.sigil == cah.$.Sigil.ADMIN) {
           clazz = 'admin';
         }
-        cah.log.status_with_game(game_id, "<" + cah.sigil + cah.nickname + "> " + text, clazz,
+        cah.log.status_with_game(game_id, cah.sigil + cah.nickname + ": " + text, clazz,
             false, cah.log.getTitleForIdCode(cah.idcode));
         break;
       case 'me':
@@ -213,7 +213,7 @@ function chatsubmit_click(game_id, parent_element) {
       case 'names':
         ajax = cah.Ajax.build(cah.$.AjaxOperation.NAMES);
         break;
-      case 'addcardcast':
+      case 'add':
         if (game_id !== null) {
           ajax = cah.Ajax.build(cah.$.AjaxOperation.CARDCAST_ADD_CARDSET).withCardcastId(
               text.split(' ')[0]).withGameId(game_id);
