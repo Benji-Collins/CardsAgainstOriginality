@@ -29,6 +29,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <script type="text/javascript" src="js/jquery.json.js"></script>
 <script type="text/javascript" src="js/QTransform.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jquery.titlealert.js"></script>
 <script type="text/javascript" src="js/cah.js"></script>
 <script type="text/javascript" src="js/cah.config.js"></script>
 <script type="text/javascript" src="js/cah.constants.js"></script>
@@ -46,22 +47,23 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <script type="text/javascript" src="js/cah.app.js"></script>
 <link rel="stylesheet" type="text/css" href="cah.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="jquery-ui.min.css" media="screen" />
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px|Source+Sans+Pro" rel="stylesheet">
 <style>
 body {
   min-height: 640px;
   background: #282a36;
   color: #bcc3cd;
-  font-size: 1.3em;
+  font-size: 16px;
   margin: 0;
   font-family: 'Source Sans Pro', sans-serif;
 }
-.title {
+#title {
   font-family: 'Slabo 27px', serif;
   color: #50fa7b;
   text-align: center;
   font-size: 100px;
   margin-bottom: 0px;
-  margin-top: 60px;
+  margin-top: 50px;
 }
 a {
   color: #8be9fd;
@@ -72,42 +74,82 @@ a {
   text-decoration: none;
   cursor: default;
 }
-.subtitle {
+#subtitle {
   text-align: center;
   font-size: 40px;
   margin-top: 0px;
 }
 #nickbox {
-  border: 1px solid white;
+  border: none;
   display: inline;
   padding: 5px;
-  background-color: #ffffff00;
+  padding-top: 40px;
+  background-color: none;
+  align-self: center;
+  font-size: 2em;
 }
-span.error {
+#nickname {
+  color: #bcc3cd;
+  background-color: #44475a;
+  border: none;
+  height: 2em;
+  width: 20em;
+  outline: none;
+  vertical-align: middle;
+}
+#nickbox_error {
   color: #ff5555;
+  text-align: center;
+}
+#nicknameconfirm {
+  vertical-align: middle;
+  border: none;
+  background-color: #44475a;
+  height: 2.2em;
+  width: 2.7em;
+  color: #bcc3cd;
 }
 span.debug, span.admin {
   color: #bcc3cd;
+}
+#footer {
+  text-align: center;
+  position: absolute;
+  bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+#welcome {
+  display: flex;
+  flex-direction: column;
 }
 </style>
 </head>
 <body id="gamebody">
 
 <div id="welcome">
-  <p tabindex="0" class="title">
+  <p tabindex="0" id="title">
     Cards Against Oakbank
   </p>
-  <p class="subtitle">A Cards Against Humanity clone.</p>
-  <p>
-    This game is still in development. There will probably be bugs.
-  </p>
+  <p id="subtitle">A Cards Against Humanity clone.</p>
   <div id="nickbox">
-    <label for="nickname">Nickname:</label>
-    <input type="text" id="nickname" value="" maxlength="20" role="textbox"
-        aria-label="Enter your nickname." data-lpignore="true" />
+    <label for="nickname" id="nicklabel">Nickname:</label>
+    <input type="text" id="nickname" value="" maxlength="25" role="textbox"
+        aria-label="Enter your nickname." data-lpignore="true" autofocus />
     <input type="button" id="nicknameconfirm" value="Set" />
-    <span id="nickbox_error" class="error"></span>
   </div>
+  <span id="nickbox_error" class="error"></span>
+  <p id="footer">
+    Cards Against Oakbank is a Cards Against Humanity clone, which is available at
+    <a href="http://www.cardsagainsthumanity.com/">cardsagainsthumanity.com</a>, where you can buy it
+    or download and print it out yourself. It is based off of <a href="https://github.com/ajanata/PretendYoureXyzzy">Pretend You're Xyzzy</a>
+    and is distributed under a
+    <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons - Attribution -
+    Noncommercial - Share Alike license</a>. You may download the source code to this version from
+    <a href="https://github.com/Benji-Collins/CardsAgainstOakbank">GitHub</a>. For full license
+    information, including information about included libraries, see the
+    <a href="license.html">full license information</a>.
+  </p>
 </div>
 
 <div id="canvas" class="hide">
@@ -317,8 +359,8 @@ span.debug, span.admin {
       <div style="width:100%; height:100%;">
         <div class="game_left_side">
           <div class="game_black_card_wrapper">
-            <span tabindex="0">The black card for
-                <span class="game_black_card_round_indicator">this round is</span>:
+            <span tabindex="0">
+                <span class="game_black_card_round_indicator"></span>:
             </span>
             <div class="game_black_card" tabindex="0">
             </div>
@@ -329,7 +371,6 @@ span.debug, span.admin {
         </div>
         <div class="game_right_side hide">
           <div class="game_right_side_box game_white_card_wrapper">
-            <span tabindex="0">The white cards played this round are:</span>
             <div class="game_white_cards game_right_side_cards">
             </div>
           </div>
@@ -344,7 +385,6 @@ span.debug, span.admin {
         <div class="game_hand_filter hide">
           <span class="game_hand_filter_text"></span>
         </div>
-        <span class="your_hand" tabindex="0">Your Hand</span>
         <div class="game_hand_cards">
         </div>
       </div>

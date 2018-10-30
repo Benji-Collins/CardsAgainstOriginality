@@ -9,11 +9,11 @@
       min-height: 640px;
       background: #282a36;
       color: #bcc3cd;
-      font-size: 12px;
+      font-size: 16px;
       margin: 0;
       font-family: 'Source Sans Pro', sans-serif;
     }
-    .title {
+    #title {
       font-family: 'Slabo 27px', serif;
       color: #50fa7b;
       text-align: center;
@@ -21,12 +21,12 @@
       margin-bottom: 0px;
       margin-top: 60px;
     }
-    .subtitle {
+    #subtitle {
       text-align: center;
       font-size: 40px;
       margin-top: 0px;
     }
-    .footer {
+    #footer {
       text-align: center;
       position: absolute;
       bottom: 20px;
@@ -37,30 +37,31 @@
       color: #8be9fd;
       text-decoration: none;
     }
-    .wrapper {
+    #wrapper {
       text-align: center;
       margin-top: 150px;
     }
-    .button {
+    #button {
       color: #ffb86c;
       font-size: 2em;
       text-align: center;
       padding: 5px 5px;
       cursor: pointer;
       border: none;
+      outline: none;
       background-color: #ffffff00;
     }
     </style>
     </head>
     <body>
-    <p class="title">
+    <p id="title">
       Cards Against Oakbank
     </p>
-    <p class="subtitle">A Cards Against Humanity clone.</p>
-    <div class="wrapper">
-      <input class="button" type="button" value="Take me to the game!" onclick="window.location='game.jsp';">
+    <p id="subtitle">A Cards Against Humanity clone.</p>
+    <div id="wrapper">
+      <input id="button" type="button" value="Take me to the game!" onclick="window.location='game.jsp';">
     </div>
-    <p class="footer">
+    <p id="footer">
       Cards Against Oakbank is a Cards Against Humanity clone, which is available at
       <a href="http://www.cardsagainsthumanity.com/">cardsagainsthumanity.com</a>, where you can buy it
       or download and print it out yourself. It is based off of <a href="https://github.com/ajanata/PretendYoureXyzzy">Pretend You're Xyzzy</a>

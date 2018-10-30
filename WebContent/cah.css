@@ -7,36 +7,6 @@
 h2,h3,h4 {
   margin: 0 0 .25em;
 }
-/*
-#browser {
-  background: rgba(0, 0, 0, .5);
-}
-
-#browser_inner {
-  border: 10px solid red;
-  padding: 15px;
-  background: white;
-  margin: 150px;
-  min-height: 150px;
-}
-
-#browser, #browser_inner {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  z-index: 9001;
-}
-
-#browser_ok {
-  margin: 15px;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-}
-*/
-
 #menubar {
   background:#555;
   border-bottom:1px solid #333;
@@ -44,11 +14,9 @@ h2,h3,h4 {
   height: 25px;
   padding:.5em;
 }
-
 #menubar_left {
   float: left;
 }
-
 #menubar_right {
   float: right;
 }
@@ -58,23 +26,18 @@ h2,h3,h4 {
   position: relative;
   width: 100%;
 }
-
 #main {
   height: 506px;
   padding: .5em;
 }
-
 #welcome {
   padding: 1em;
 }
-
-
 #game_list {
   height: 100%;
   width: 100%;
   overflow: auto;
 }
-
 .gamelist_lobby {
   background: #fff;
   border-radius: .25em;
@@ -84,7 +47,6 @@ h2,h3,h4 {
   border: 1px solid #ccc;
   margin: 4px;
 }
-
 .gamelist_lobby_left {
   width: 77%;
   height: 100%;
