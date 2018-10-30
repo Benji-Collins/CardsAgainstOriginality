@@ -262,7 +262,7 @@ var ErrorCodeMsgs = map[string]string{
 	 "br": "Bad request.",
 	 "nsu": "No such user.",
 	 "aS": "The game has already stopped.",
-	 "se": "Your session has expired. Refresh the page.",
+	 "se": "Your session has expired. Please refresh the page.",
 	 "pac": "You already played all the necessary cards!",
 	 "nms": "No message specified.",
 	 "nep": "There are not enough players to start the game.",
@@ -272,9 +272,9 @@ var ErrorCodeMsgs = map[string]string{
 	 "ngs": "No game specified.",
 	 "nes": "You must use more words in a message that long.",
 	 "nitg": "You are not in that game.",
-	 "tmu": "There are too many users connected. Either join another server, or wait for a user to disconnect.",
+	 "tmu": "There are too many users connected. Please join another server, or wait for a user to disconnect.",
 	 "ig": "Invalid game specified.",
-	 "gf": "That game is full. Join another.",
+	 "gf": "That game is full.",
 	 "ncs": "No card specified.",
 	 "ad": "Access denied.",
 	 "cjag": "You cannot join another game.",
@@ -284,7 +284,7 @@ var ErrorCodeMsgs = map[string]string{
 	 "rW": "You must use more unique words in your message.",
 	 "serr": "An error occurred on the server.",
 	 "CL": "Try turning caps lock off.",
-	 "dnhc": "You don't have that card.",
+	 "dnhc": "You don't have that card. Try refreshing the page or type '/sync' in chat.",
 	 "as": "The game has already started.",
 	 "nns": "No nickname specified.",
 	 "tf": "You are chatting too fast. Wait a few seconds and try again.",
@@ -292,7 +292,7 @@ var ErrorCodeMsgs = map[string]string{
 	 "ons": "Operation not specified.",
 	 "rm": "You can't repeat the same message multiple times in a row.",
 	 "nj": "You are not the judge.",
-	 "rn": "That nick is reserved.",
+	 "rn": "That name is reserved.",
 	 "tmsc": "You used too many special characters in that message.",
 }
 
@@ -378,19 +378,19 @@ const (
 )
 
 var GamePlayerStatusMsgs = map[string]string{
-	 "sjj": "Selecting",
+	 "sjj": "Choosing a Winner",
 	 "sv": "Spectator",
 	 "sw": "Winner!",
 	 "sh": "Host",
 	 "si": "",
 	 "sj": "Card Czar",
-	 "sp": "Playing",
+	 "sp": "Thinking...",
 }
 
 var GamePlayerStatusMsgs2 = map[string]string{
 	 "sjj": "Select a winning card.",
 	 "sv": "You are just spectating.",
-	 "sw": "You have won!",
+	 "sw": "Winner WInner, Chicken Dinner!",
 	 "sh": "Wait for players then click Start Game.",
 	 "si": "Waiting for players...",
 	 "sj": "You are the Card Czar.",
