@@ -22,6 +22,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="A Cards Against Humanity clone.">
 <title>Cards Against Oakbank</title>
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/jquery-migrate-1.2.1.js"></script>
@@ -69,11 +70,6 @@ a {
   color: #8be9fd;
   text-decoration: none;
 }
-.message {
-  color: #ffb86c;
-  text-decoration: none;
-  cursor: default;
-}
 #subtitle {
   text-align: center;
   font-size: 40px;
@@ -91,14 +87,16 @@ a {
 #nickname {
   color: #bcc3cd;
   background-color: #44475a;
-  border: none;
+  border-left: 5px solid #44475a;
+  border-right: none;
+  border-top: none;
+  border-bottom: none;
   height: 2em;
   width: 20em;
   outline: none;
   vertical-align: middle;
 }
 #nickbox_error {
-  color: #ff5555;
   text-align: center;
 }
 #nicknameconfirm {
@@ -107,9 +105,6 @@ a {
   background-color: #44475a;
   height: 2.2em;
   width: 2.7em;
-  color: #bcc3cd;
-}
-span.debug, span.admin {
   color: #bcc3cd;
 }
 #footer {
@@ -155,20 +150,13 @@ span.debug, span.admin {
 <div id="canvas" class="hide">
   <div id="menubar">
     <div id="menubar_left">
-      <input type="button" id="refresh_games" class="hide" value="Refresh Games" />
       <input type="button" id="create_game" class="hide" value="Create Game" />
-      <input type="text" id="filter_games" class="hide" placeholder="Filter games by keyword"
-          data-lpignore="true"/>
 
       <input type="button" id="leave_game" class="hide" value="Leave Game" />
       <input type="button" id="start_game" class="hide" value="Start Game" />
       <input type="button" id="stop_game" class="hide" value="Stop Game" />
     </div>
     <div id="menubar_right">
-      Current timer duration: <span id="current_timer">0</span> seconds
-      <input type="button" id="view_cards" value="View Cards"
-          title="Open a new window to view all cards in the game."
-          onclick="window.open('viewcards.jsp', 'viewcards');" />
       <input type="button" id="logout" value="Log out" />
     </div>
   </div>
@@ -252,9 +240,11 @@ span.debug, span.admin {
     </div>
     <div id="tab-global">
       <div class="log"></div>
-      <input type="text" class="chat" maxlength="200" aria-label="Type here to chat."
-          data-lpignore="true" />
-      <input type="button" class="chat_submit" value="Chat" />
+      <div id="chatwrapper">
+        <input type="text" class="chat" maxlength="200" aria-label="Type here to chat."
+            data-lpignore="true" />
+          </div>
+        <input type="button" class="chat_submit" value="Send" />
     </div>
   </div>
 </div>
@@ -347,10 +337,6 @@ span.debug, span.admin {
     class="hide">
   <div id="game_template" class="game">
     <div class="game_top">
-      <input type="button" class="game_show_last_round game_menu_bar" value="Show Last Round"
-          disabled="disabled" />
-      <input type="button" class="game_show_options game_menu_bar" value="Hide Game Options" />
-      <label class="game_menu_bar checkbox"><input type="checkbox" class="game_animate_cards" checked="checked" /><span> Animate Cards</span></label>
       <div class="game_message" role="status">
         Waiting for server...
       </div>
@@ -360,12 +346,12 @@ span.debug, span.admin {
         <div class="game_left_side">
           <div class="game_black_card_wrapper">
             <span tabindex="0">
-                <span class="game_black_card_round_indicator"></span>:
+                <span class="game_black_card_round_indicator"></span>
             </span>
             <div class="game_black_card" tabindex="0">
             </div>
           </div>
-          <input type="button" class="confirm_card" value="Confirm Selection" />
+          <input type="button" class="confirm_card" value="Play Card" />
         </div>
         <div class="game_options">
         </div>
@@ -428,7 +414,6 @@ span.debug, span.admin {
 <div class="hide">
   <div class="game_options" id="game_options_template">
     <span class="options_host_only">Only the game host can change options.</span>
-    <br/><br/>
     <fieldset>
       <legend>Game options:</legend>
       <label id="score_limit_template_label" for="score_limit_template">Score limit:</label>
@@ -449,7 +434,7 @@ span.debug, span.admin {
           <option <%= i == GameOptions.DEFAULT_PLAYER_LIMIT ? "selected='selected' " : "" %>value="<%= i %>"><%= i %></option>
         <% } %>
       </select>
-      Having more than 10 players may get cramped!
+      Having more than 10 players may get cramped, especially on smaller screens!
       <br/>
       <label id="spectator_limit_template_label" for="spectator_limit_template">Spectator limit:</label>
       <select id="spectator_limit_template" class="spectator_limit"
@@ -460,7 +445,7 @@ span.debug, span.admin {
           <option <%= i == GameOptions.DEFAULT_SPECTATOR_LIMIT ? "selected='selected' " : "" %>value="<%= i %>"><%= i %></option>
         <% } %>
       </select>
-      Spectators can watch and chat, but not actually play. Not even as Czar.
+      Spectators can watch and chat, but not actually play.
       <br/>
       <label id="timer_multiplier_template_label" for="timer_multiplier_template"
           title="Players will be skipped if they have not played within a reasonable amount of time. This is the multiplier to apply to the default timeouts, or Unlimited to disable timeouts.">
@@ -489,6 +474,14 @@ span.debug, span.admin {
         <legend>Card Sets</legend>
         <span class="base_card_sets"></span>
         <span class="extra_card_sets"></span>
+        <legend>Type /add ##### to add a CardCast deck. Suggested decks include:
+          <br>
+          <a href="https://www.cardcastgame.com/browse/deck/MMUSJ">MMUSJ - Cards Against The World</a>
+          <br>
+          <a href="https://www.cardcastgame.com/browse/deck/PCK9T">PCK9T - Cactus Cancer</a>
+          <br>
+          <a href="https://www.cardcastgame.com/browse/deck/RPH29">RPH29 - CAO Pack (WIP)</a>
+        </legend>
       </fieldset>
       <% if (allowBlankCards) { %>
         <br/>

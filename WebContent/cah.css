@@ -64,7 +64,7 @@ h2,h3,h4 {
   width: 100%;
   height: 75%;
   border: 1px solid #aaa;
-  background: linear-gradient(#44475a, #ddd) #ddd;
+  background: linear-gradient(#44475a, #44475a) #44475a;
   border-radius: .25em;
   text-transform: uppercase;
   font-weight: 700;
@@ -75,7 +75,7 @@ h2,h3,h4 {
   width: 100%;
   height: 25%;
   border: 1px solid #aaa;
-  background: linear-gradient(#fff, #ddd) #ddd;
+  background: linear-gradient(#44475a, #44475a) #44475a;
   border-radius: .25em;
   text-transform: uppercase;
   font-weight: 700;
@@ -108,17 +108,20 @@ h2,h3,h4 {
   position: absolute;
   bottom: 0px;
   min-height: 100px;
-  border: 1px solid #44475a;
+  border: none;
 }
 
 #tabs {
   min-height: 100px;
   width: 50%;
   height: 100%;
-  border: 0px;
+  border: none;
   position: absolute;
   bottom: 0px;
   right: 14px;
+  background-color: #44475a;
+}
+#tabs .ui-widget-content {
   background-color: #44475a;
 }
 
@@ -151,13 +154,13 @@ h2,h3,h4 {
 .log {
   width: 100%;
   height: 198px;
-  border-style: none solid solid none;
-  border-color: #44475a;
-  border-width: 1px;
+  border: 2px solid #44475a;
+  border-top: 2px solid #4b4d5f;
+  color: #bcc3cd;
   position: absolute;
-  bottom: 18px;
+  bottom: 28px;
   right: 0px;
-  overflow-y: scroll;
+  overflow: auto;
   min-height: 43px;
   font-size: 16px;
 }
@@ -170,29 +173,63 @@ h2,h3,h4 {
   overflow-y: auto;
 }
 
-.chat {
-  border: 1px solid #6272a4;
-  background-color: #6272a4;
-  left: -1px;
-  bottom: 0px;
-  height: 25px;
+#chatwrapper {
+  left: 1px;
+  bottom: 1px;
   position: absolute;
   padding: 0px;
-  width: 90%;
-  font-size: 14px;
+  width: 100%;
+  display: flex;
 }
-
-.chat_submit {
-  width: 50px;
+.chat {
+  border: none;
+  outline: none;
+  color: #f6faff;
+  background-color: #6272a4;
   height: 25px;
-  position: absolute;
-  right: -1px;
-  bottom: -1px;
+  width: 95% !important;
+  font-size: 14px;
+  padding-left: 5px;
+  padding-right: none;
+  padding-top: none;
+  padding-bottom: none;
+  order: 1;
+}
+.chat_submit {
+  width: 55px;
+  height: 25px;
+  vertical-align: middle;
   margin: 0px;
   padding: 0px;
   font-size: 14px;
+  color: #f6faff;
+  background-color: #6272a4;
+  border: 2px solid #6272a4;
+  outline: none;
+  position:absolute;
+  right:0px;
+  bottom:0px;
 }
-
+#create_game {
+  background-color: #6272a4;
+  color: #f6faff;
+  border: 2px solid #6272a4;
+}
+#logout {
+  background-color: #6272a4;
+  color: #f6faff;
+  border: 2px solid #6272a4;
+}
+#leave_game {
+  background-color: #6272a4;
+  color: #f6faff;
+  border: 2px solid #6272a4;
+}
+#start_game {
+  background-color: #6272a4;
+  color: #f6faff;
+  border: 2px solid #6272a4;
+}
 .card {
   position: relative;
   width: 200px;
@@ -222,7 +259,7 @@ h2,h3,h4 {
 }
 
 .whitecard, .gamelist_lobby{
-  background-image: linear-gradient(#fff,#fff 75%,#f8f8f8);
+  background-image: linear-gradient(#44475a,#44475a 75%,#44475a);
 }
 
 .cah {
@@ -297,6 +334,7 @@ h2,h3,h4 {
 .game_message {
   font-size: 150%;
   font-weight:bold;
+  color: #50fa7b;
 }
 
 .game_black_card_wrapper {
@@ -311,6 +349,8 @@ h2,h3,h4 {
 }
 
 .confirm_card {
+  background-color: #6272a4;
+  border: 2px solid #6272a4;
   float: left;
   margin-top: 10px;
   width: 100%;
@@ -329,10 +369,19 @@ h2,h3,h4 {
   left: 246px;
   width: 1000px;
 }
-
+.error {
+  color: #ff5555;
+}
+span.debug {
+  color: #bcc3cd;
+}
+span.admin {
+  color: #ffb86c;
+}
 .game_options {
-  background: #eee;
+  background-color: #44475a;
   z-index: 500;
+  padding-bottom: 5px;
 }
 
 .game_right_side_box {
@@ -531,7 +580,12 @@ h2,h3,h4 {
 .scorecard_score, .scorecard_player {
   font-weight:700;
 }
-
+.scorecard_score, .scorecard_point_title {
+  color: #ff79c6;
+}
+.scorecard_player {
+  color: #ffb86c;
+}
 .checkbox {
   margin-right: 4px;
   white-space: nowrap;
@@ -577,4 +631,17 @@ dfn {
 .card_text {
   word-wrap: break-word;
   overflow: hidden;
+}
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
