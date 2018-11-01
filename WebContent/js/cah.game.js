@@ -780,23 +780,6 @@ cah.Game.prototype.removeCardcastDeck = function(data) {
 };
 
 /**
- * Display a list of currently in-use Cardcast decks.
- * 
- * @param {array}
- *          data Array of CardSetDatas.
- */
-cah.Game.prototype.listCardcastDecks = function(cardSets) {
-  cah.log.status_with_game(this, "Type <a class='message'>/addcardcast code</a> to add a <a target='_blank'"
-      + " href='http://www.cardcastgame.com'>Cardcast</a> deck to the game. "
-      + "Try <a class='message'>/addcardcast MMUSJ</a> to add the Cards Against The World pack."
-      + "", 'admin', true);
-  for ( var key in cardSets) {
-    var cardSetData = cardSets[key];
-    this.displayCardcastDeckMessage_(cardSetData, "In use");
-  }
-};
-
-/**
  * Display a message about a Cardcast deck.
  * 
  * @param {object}
