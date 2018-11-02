@@ -22,7 +22,8 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="A Cards Against Humanity clone.">
+<meta name="description" content="A Cards Against Humanity clone. Open sourced and available on GitHub.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cards Against Oakbank</title>
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/jquery-migrate-1.2.1.js"></script>
@@ -50,78 +51,9 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <link rel="stylesheet" type="text/css" href="jquery-ui.min.css" media="screen" />
 <link href="https://fonts.googleapis.com/css?family=Slabo+27px|Source+Sans+Pro" rel="stylesheet">
 <style>
-body {
-  min-height: 640px;
-  background: #282a36;
-  color: #bcc3cd;
-  font-size: 16px;
-  margin: 0;
-  font-family: 'Source Sans Pro', sans-serif;
-}
-#title {
-  font-family: 'Slabo 27px', serif;
-  color: #50fa7b;
-  text-align: center;
-  font-size: 100px;
-  margin-bottom: 0px;
-  margin-top: 50px;
-}
-a {
-  color: #8be9fd;
-  text-decoration: none;
-}
-#subtitle {
-  text-align: center;
-  font-size: 40px;
-  margin-top: 0px;
-}
-#nickbox {
-  border: none;
-  display: inline;
-  padding: 5px;
-  padding-top: 40px;
-  background-color: none;
-  align-self: center;
-  font-size: 2em;
-}
-#nickname {
-  color: #bcc3cd;
-  background-color: #44475a;
-  border-left: 5px solid #44475a;
-  border-right: none;
-  border-top: none;
-  border-bottom: none;
-  height: 2em;
-  width: 20em;
-  outline: none;
-  vertical-align: middle;
-}
-#nickbox_error {
-  text-align: center;
-}
-#nicknameconfirm {
-  vertical-align: middle;
-  border: none;
-  background-color: #44475a;
-  height: 2.2em;
-  width: 2.7em;
-  color: #bcc3cd;
-}
-#footer {
-  text-align: center;
-  position: absolute;
-  bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-#welcome {
-  display: flex;
-  flex-direction: column;
-}
 </style>
 </head>
 <body id="gamebody">
-
 <div id="welcome">
   <p tabindex="0" id="title">
     Cards Against Oakbank
@@ -134,6 +66,7 @@ a {
     <input type="button" id="nicknameconfirm" value="Set" />
   </div>
   <span id="nickbox_error" class="error"></span>
+  <span id="note"></span>
   <p id="footer">
     Cards Against Oakbank is a Cards Against Humanity clone, which is available at
     <a href="http://www.cardsagainsthumanity.com/">cardsagainsthumanity.com</a>, where you can buy it
@@ -145,6 +78,16 @@ a {
     information, including information about included libraries, see the
     <a href="license.html">full license information</a>.
   </p>
+  <script>
+    if (window.innerHeight <= 800)
+    {
+      document.getElementById("note").innerHTML = "Your screen resolution is kinda small. Try zooming out to 80% (Ctrl -).";
+    }
+    else
+    {
+      document.getElementById("note").innerHTML = "Dark mode!";
+    }
+</script>
 </div>
 
 <div id="canvas" class="hide">
@@ -253,10 +196,8 @@ a {
 <div class="hide">
 	<div id="gamelist_lobby_template" class="gamelist_lobby" tabindex="0">
 	<div class="gamelist_lobby_left">
-	    	<h3>
+	  <h3 class="gamelist_hostname">
 			<span class="gamelist_lobby_host">host</span>'s Game
-			(<span class="gamelist_lobby_player_count"></span>/<span class="gamelist_lobby_max_players"></span>,
-			<span class="gamelist_lobby_spectator_count"></span>/<span class="gamelist_lobby_max_spectators"></span>)
 			<span class="gamelist_lobby_status">status</span>
 		</h3>
 		<div>
@@ -337,6 +278,7 @@ a {
     class="hide">
   <div id="game_template" class="game">
     <div class="game_top">
+      <label class="game_menu_bar checkbox"><input type="checkbox" class="game_animate_cards" checked="checked" /><span> Animate Cards</span></label>
       <div class="game_message" role="status">
         Waiting for server...
       </div>
