@@ -5,7 +5,19 @@ Cards Against Oakbank is a clone of [ajanata/PretendYoureXyzzy](https://github.c
 
 Cards Against Oakbank was simply made for my personal use. All license terms are exactly the same as the original project by ajanata. All original files/source code can be found on ajanata's repo.
 
-If you plan on using this repo for your own use, check the wiki pages (coming soon) for the correct commands for database install and building.
+If you plan on using this repo for your own use, check the wiki pages for the correct commands for database install and building.
+
+---
+
+What does this fork have that the original repo doesn't?
+
+- Dark theme
+- Cleaner UI
+- Message notifications
+- Small resolution alert
+- Shorter CardCast command
+- Better in-game CardCast instructions
+- More complete install instructions in wiki
 
 ---
 
