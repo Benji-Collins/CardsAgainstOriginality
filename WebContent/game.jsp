@@ -22,6 +22,8 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="A Cards Against Humanity clone. Open sourced and available on GitHub.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cards Against Oakbank</title>
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/jquery-migrate-1.2.1.js"></script>
@@ -29,11 +31,9 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <script type="text/javascript" src="js/jquery.json.js"></script>
 <script type="text/javascript" src="js/QTransform.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jquery.titlealert.js"></script>
 <script type="text/javascript" src="js/cah.js"></script>
 <script type="text/javascript" src="js/cah.config.js"></script>
-<%-- cah must be first, ajax must be before app. app probably has to be last. --%>
-<%-- TODO make this be dynamic with looking at the filesystem and using jquery --%>
-<%-- except that is nontrivial thanks to dependency ordering -_- --%>
 <script type="text/javascript" src="js/cah.constants.js"></script>
 <script type="text/javascript" src="js/cah.log.js"></script>
 <script type="text/javascript" src="js/cah.gamelist.js"></script>
@@ -49,49 +49,57 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <script type="text/javascript" src="js/cah.app.js"></script>
 <link rel="stylesheet" type="text/css" href="cah.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="jquery-ui.min.css" media="screen" />
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px|Source+Sans+Pro" rel="stylesheet">
+<style>
+</style>
 </head>
 <body id="gamebody">
-
 <div id="welcome">
-  <h1 tabindex="0">
+  <p tabindex="0" id="title">
     Cards Against Oakbank
-  </h1>
-  <h3>A <a href="http://cardsagainsthumanity.com/">Cards Against Humanity</a> clone.</h3>
-  <p>
-    This game is still in development. There will probably be bugs.
   </p>
+  <p id="subtitle">A Cards Against Humanity clone.</p>
   <div id="nickbox">
-    <label for="nickname">Nickname:</label>
-    <input type="text" id="nickname" value="" maxlength="30" role="textbox"
-        aria-label="Enter your nickname." data-lpignore="true" />
-    <label for="idcode">
-    <dfn title="Only available via HTTPS. Provide a secret identification code to positively identify yourself in the chat.">
-    Optional identification code:</dfn></label>
-    <input type="password" id="idcode" value="" maxlength="100" disabled="disabled"
-        aria-label="Optionally enter an identification code." />
-    <a href="https://github.com/ajanata/PretendYoureXyzzy/wiki/Identification-Codes">(Help)</a>
+    <label for="nickname" id="nicklabel">Nickname:</label>
+    <input type="text" id="nickname" value="" maxlength="25" role="textbox"
+        aria-label="Enter your nickname." data-lpignore="true" autofocus />
     <input type="button" id="nicknameconfirm" value="Set" />
-    <span id="nickbox_error" class="error"></span>
   </div>
+  <span id="nickbox_error" class="error"></span>
+  <span id="note"></span>
+  <p id="footer">
+    Cards Against Oakbank is a Cards Against Humanity clone, which is available at
+    <a href="http://www.cardsagainsthumanity.com/">cardsagainsthumanity.com</a>, where you can buy it
+    or download and print it out yourself. It is based off of <a href="https://github.com/ajanata/PretendYoureXyzzy">Pretend You're Xyzzy</a>
+    and is distributed under a
+    <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons - Attribution -
+    Noncommercial - Share Alike license</a>. You may download the source code to this version from
+    <a href="https://github.com/Benji-Collins/CardsAgainstOakbank">GitHub</a>. For full license
+    information, including information about included libraries, see the
+    <a href="license.html">full license information</a>.
+  </p>
+  <script>
+    if (window.innerHeight <= 800)
+    {
+      document.getElementById("note").innerHTML = "Your screen resolution is kinda small. Try zooming out to 80% (Ctrl -).";
+    }
+    else
+    {
+      document.getElementById("note").innerHTML = "Dark mode!";
+    }
+</script>
 </div>
 
 <div id="canvas" class="hide">
   <div id="menubar">
     <div id="menubar_left">
-      <input type="button" id="refresh_games" class="hide" value="Refresh Games" />
       <input type="button" id="create_game" class="hide" value="Create Game" />
-      <input type="text" id="filter_games" class="hide" placeholder="Filter games by keyword"
-          data-lpignore="true"/>
 
       <input type="button" id="leave_game" class="hide" value="Leave Game" />
       <input type="button" id="start_game" class="hide" value="Start Game" />
       <input type="button" id="stop_game" class="hide" value="Stop Game" />
     </div>
     <div id="menubar_right">
-      Current timer duration: <span id="current_timer">0</span> seconds
-      <input type="button" id="view_cards" value="View Cards"
-          title="Open a new window to view all cards in the game."
-          onclick="window.open('viewcards.jsp', 'viewcards');" />
       <input type="button" id="logout" value="Log out" />
     </div>
   </div>
@@ -175,9 +183,11 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
     </div>
     <div id="tab-global">
       <div class="log"></div>
-      <input type="text" class="chat" maxlength="200" aria-label="Type here to chat."
-          data-lpignore="true" />
-      <input type="button" class="chat_submit" value="Chat" />
+      <div id="chatwrapper">
+        <input type="text" class="chat" maxlength="200" aria-label="Type here to chat."
+            data-lpignore="true" />
+          </div>
+        <input type="button" class="chat_submit" value="Send" />
     </div>
   </div>
 </div>
@@ -186,10 +196,8 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <div class="hide">
 	<div id="gamelist_lobby_template" class="gamelist_lobby" tabindex="0">
 	<div class="gamelist_lobby_left">
-	    	<h3>
+	  <h3 class="gamelist_hostname">
 			<span class="gamelist_lobby_host">host</span>'s Game
-			(<span class="gamelist_lobby_player_count"></span>/<span class="gamelist_lobby_max_players"></span>,
-			<span class="gamelist_lobby_spectator_count"></span>/<span class="gamelist_lobby_max_spectators"></span>)
 			<span class="gamelist_lobby_status">status</span>
 		</h3>
 		<div>
@@ -270,9 +278,6 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
     class="hide">
   <div id="game_template" class="game">
     <div class="game_top">
-      <input type="button" class="game_show_last_round game_menu_bar" value="Show Last Round"
-          disabled="disabled" />
-      <input type="button" class="game_show_options game_menu_bar" value="Hide Game Options" />
       <label class="game_menu_bar checkbox"><input type="checkbox" class="game_animate_cards" checked="checked" /><span> Animate Cards</span></label>
       <div class="game_message" role="status">
         Waiting for server...
@@ -282,19 +287,18 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
       <div style="width:100%; height:100%;">
         <div class="game_left_side">
           <div class="game_black_card_wrapper">
-            <span tabindex="0">The black card for
-                <span class="game_black_card_round_indicator">this round is</span>:
+            <span tabindex="0">
+                <span class="game_black_card_round_indicator"></span>
             </span>
             <div class="game_black_card" tabindex="0">
             </div>
           </div>
-          <input type="button" class="confirm_card" value="Confirm Selection" />
+          <input type="button" class="confirm_card" value="Play Card" />
         </div>
         <div class="game_options">
         </div>
         <div class="game_right_side hide">
           <div class="game_right_side_box game_white_card_wrapper">
-            <span tabindex="0">The white cards played this round are:</span>
             <div class="game_white_cards game_right_side_cards">
             </div>
           </div>
@@ -309,7 +313,6 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
         <div class="game_hand_filter hide">
           <span class="game_hand_filter_text"></span>
         </div>
-        <span class="your_hand" tabindex="0">Your Hand</span>
         <div class="game_hand_cards">
         </div>
       </div>
@@ -353,7 +356,6 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <div class="hide">
   <div class="game_options" id="game_options_template">
     <span class="options_host_only">Only the game host can change options.</span>
-    <br/><br/>
     <fieldset>
       <legend>Game options:</legend>
       <label id="score_limit_template_label" for="score_limit_template">Score limit:</label>
@@ -374,7 +376,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
           <option <%= i == GameOptions.DEFAULT_PLAYER_LIMIT ? "selected='selected' " : "" %>value="<%= i %>"><%= i %></option>
         <% } %>
       </select>
-      Having more than 10 players may get cramped!
+      Having more than 10 players may get cramped, especially on smaller screens!
       <br/>
       <label id="spectator_limit_template_label" for="spectator_limit_template">Spectator limit:</label>
       <select id="spectator_limit_template" class="spectator_limit"
@@ -385,7 +387,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
           <option <%= i == GameOptions.DEFAULT_SPECTATOR_LIMIT ? "selected='selected' " : "" %>value="<%= i %>"><%= i %></option>
         <% } %>
       </select>
-      Spectators can watch and chat, but not actually play. Not even as Czar.
+      Spectators can watch and chat, but not actually play.
       <br/>
       <label id="timer_multiplier_template_label" for="timer_multiplier_template"
           title="Players will be skipped if they have not played within a reasonable amount of time. This is the multiplier to apply to the default timeouts, or Unlimited to disable timeouts.">
@@ -414,6 +416,14 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
         <legend>Card Sets</legend>
         <span class="base_card_sets"></span>
         <span class="extra_card_sets"></span>
+        <legend>Type /add ##### to add a CardCast deck. Suggested decks include:
+          <br>
+          <a href="https://www.cardcastgame.com/browse/deck/MMUSJ">MMUSJ - Cards Against The World</a>
+          <br>
+          <a href="https://www.cardcastgame.com/browse/deck/PCK9T">PCK9T - Cactus Cancer</a>
+          <br>
+          <a href="https://www.cardcastgame.com/browse/deck/RPH29">RPH29 - CAO Pack (WIP)</a>
+        </legend>
       </fieldset>
       <% if (allowBlankCards) { %>
         <br/>

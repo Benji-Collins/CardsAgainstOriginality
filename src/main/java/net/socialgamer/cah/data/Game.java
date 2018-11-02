@@ -144,12 +144,12 @@ public class Game {
   /**
    * Time, in milliseconds, to delay before starting a new round.
    */
-  private final static int ROUND_INTERMISSION = 8 * 1000;
+  private final static int ROUND_INTERMISSION = 5 * 1000;
   /**
    * Duration, in milliseconds, for the minimum timeout a player has to choose a card to play.
    * Minimum 10 seconds.
    */
-  private final static int PLAY_TIMEOUT_BASE = 45 * 1000;
+  private final static int PLAY_TIMEOUT_BASE = 30 * 1000;
   /**
    * Duration, in milliseconds, for the additional timeout a player has to choose a card to play,
    * for each card that must be played. For example, on a PICK 2 card, two times this amount of
