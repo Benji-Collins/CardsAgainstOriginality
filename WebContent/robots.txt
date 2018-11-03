@@ -2,3 +2,10 @@ User-Agent: *
 Disallow: /admin.jsp
 Disallow: /cardsets.jsp
 Disallow: /addcard.jsp
+Disallow: /license.html
+Disallow: /stats.jsp
+Disallow: /viewcards.jsp
+Disallow: /google62f703948cbbcac8.html
+Disallow: /images/
+Disallow: /js/
+Disallow: /META-INF/
