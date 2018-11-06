@@ -13,6 +13,7 @@ body {
   font-size: 100px;
   margin-bottom: 0px;
   margin-top: 50px;
+  outline: none;
 }
 a {
   color: #8be9fd;
@@ -359,6 +360,7 @@ h2,h3,h4 {
   position: absolute;
   color: #f6faff;
   top: 50%;
+  left: 50%;
   font-size: 300%;
   margin-top: -30px;
   background: #44475ad5;
@@ -403,6 +405,7 @@ h2,h3,h4 {
   margin-top: 10px;
   width: 100%;
   z-index: 500;
+  outline: none;
 }
 .game_left_side {
   float: left;
@@ -630,6 +633,7 @@ dfn {
 .card_text {
   word-wrap: break-word;
   overflow: hidden;
+  outline: none;
 }
 /* For custom scrollbar*/
 ::-webkit-scrollbar {

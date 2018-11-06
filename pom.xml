@@ -11,8 +11,8 @@
   <name>cao</name>
 
   <scm>
-    <url>https://github.com/Benji-Collins/CardsAgaintOakbank</url>
-    <connection>scm:git:ssh://git@github.com/Benji-Collins/CardsAgaintOakbank.git</connection>
+    <url>https://github.com/Benji-Collins/CardsAgaintOriginality</url>
+    <connection>scm:git:ssh://git@github.com/Benji-Collins/CardsAgaintOriginality.git</connection>
   </scm>
 
   <properties>

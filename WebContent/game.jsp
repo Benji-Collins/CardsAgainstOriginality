@@ -24,7 +24,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="description" content="A Cards Against Humanity clone. Open sourced and available on GitHub.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cards Against Oakbank</title>
+<title>Cards Against Originality</title>
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/jquery-migrate-1.2.1.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
@@ -56,7 +56,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <body id="gamebody">
 <div id="welcome">
   <p tabindex="0" id="title">
-    Cards Against Oakbank
+    Cards Against Originality
   </p>
   <p id="subtitle">A Cards Against Humanity clone.</p>
   <div id="nickbox">
@@ -68,13 +68,13 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
   <span id="nickbox_error" class="error"></span>
   <span id="note"></span>
   <p id="footer">
-    Cards Against Oakbank is a Cards Against Humanity clone, which is available at
+    Cards Against Originality is a Cards Against Humanity clone, which is available at
     <a href="http://www.cardsagainsthumanity.com/">cardsagainsthumanity.com</a>, where you can buy it
     or download and print it out yourself. It is based off of <a href="https://github.com/ajanata/PretendYoureXyzzy">Pretend You're Xyzzy</a>
     and is distributed under a
     <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons - Attribution -
     Noncommercial - Share Alike license</a>. You may download the source code to this version from
-    <a href="https://github.com/Benji-Collins/CardsAgainstOakbank">GitHub</a>. For full license
+    <a href="https://github.com/Benji-Collins/CardsAgainstOriginality">GitHub</a>. For full license
     information, including information about included libraries, see the
     <a href="license.html">full license information</a>.
   </p>
@@ -85,7 +85,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
     }
     else
     {
-      document.getElementById("note").innerHTML = "Dark mode!";
+      document.getElementById("note").innerHTML = "Original af.";
     }
 </script>
 </div>
@@ -234,7 +234,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
         <br/>
         <span class="watermark"></span>
 	    </div>
-	    <div class="logo_text">Cards Againt Oakbank</div>
+	    <div class="logo_text">Cards Againt Originality</div>
 	  </div>
     <div class="card_metadata">
       <div class="draw hide">DRAW <div class="card_number"></div></div>
@@ -262,7 +262,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
         <br/>
         <span class="watermark"></span>
 	    </div>
-	    <div class="logo_text">Cards Against Oakbank</div>
+	    <div class="logo_text">Cards Against Originality</div>
 	  </div>
 	</div>
 </div>

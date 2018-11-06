@@ -219,7 +219,7 @@ cah.$.ErrorCode_msg['na'] = "You are not an administrator.";
 cah.$.ErrorCode_msg['ons'] = "Operation not specified.";
 cah.$.ErrorCode_msg['rm'] = "You can't repeat the same message multiple times in a row.";
 cah.$.ErrorCode_msg['nj'] = "You are not the judge.";
-cah.$.ErrorCode_msg['rn'] = "That nick is reserved.";
+cah.$.ErrorCode_msg['rn'] = "That nickname is reserved.";
 cah.$.ErrorCode_msg['tmsc'] = "You used too many special characters in that message.";
 
 cah.$.ErrorInformation = function() {
