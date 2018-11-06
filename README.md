@@ -21,6 +21,6 @@ What does this fork have that the original repo doesn't?
 
 ---
 
-You can play/test this game [here](http://cardsagainstoakbank.tk) but I can't make any guarantees as to whether it will work or not.
+You can play/test this game [here](http://caoakbank.tk) but I can't make any guarantees as to whether it will work or not.
 
 Please dont make any pull requests/issues here as this is an unofficial fork/clone. Please had to the original repo for that.
