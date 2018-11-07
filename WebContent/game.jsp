@@ -79,13 +79,20 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
     <a href="license.html">full license information</a>.
   </p>
   <script>
-    if (window.innerHeight <= 800)
+    var note = document.getElementById("note");
+    var nickbox = document.getElementById("nickbox");
+    if (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1))
     {
-      document.getElementById("note").innerHTML = "Your screen resolution is kinda small. Try zooming out to 80% (Ctrl -).";
+      note.innerHTML = "Your browser is not supported. Please use Chrome or Firefox.";
+      nickbox.style.display = "none";
+    }
+    else if (window.innerHeight <= 800)
+    {
+      note.innerHTML = "Your screen resolution is kinda small. Try zooming out to 80% (Ctrl -).";
     }
     else
     {
-      document.getElementById("note").innerHTML = "Original af.";
+      note.innerHTML = "Do ur work, kid.";
     }
 </script>
 </div>
