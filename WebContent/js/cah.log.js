@@ -58,7 +58,7 @@ cah.log.status_with_game = function(game_or_id, text, opt_class, opt_allow_html,
   var logElement;
   // I think == null here would catch both of these cases and also be okay with game id 0 but...
   if (game_or_id === null || game_or_id === undefined) {
-    logElement = cah.log.log;
+    logElement = $('#tab-global .simplebar-content');
   } else {
     var game;
     if (game_or_id instanceof cah.Game) {
@@ -66,7 +66,7 @@ cah.log.status_with_game = function(game_or_id, text, opt_class, opt_allow_html,
     } else {
       game = cah.currentGames[game_or_id];
     }
-    logElement = $(".log", game.getChatElement());
+    logElement = $(".simplebar-content", game.getChatElement());
   }
 
   // TODO this doesn't work right on some mobile browsers

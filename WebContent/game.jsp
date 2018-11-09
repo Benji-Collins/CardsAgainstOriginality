@@ -25,12 +25,12 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <meta name="description" content="A Cards Against Humanity clone. Open sourced and available on GitHub.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cards Against Originality</title>
-<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="js/jquery-migrate-1.2.1.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/jquery.json.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.2.1/jquery-migrate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.0/jquery.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.4.0/jquery.json.min.js"></script>
 <script type="text/javascript" src="js/QTransform.js"></script>
-<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jquery.titlealert.js"></script>
 <script type="text/javascript" src="js/cah.js"></script>
 <script type="text/javascript" src="js/cah.config.js"></script>
@@ -47,6 +47,8 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <script type="text/javascript" src="js/cah.ajax.builder.js"></script>
 <script type="text/javascript" src="js/cah.ajax.handlers.js"></script>
 <script type="text/javascript" src="js/cah.app.js"></script>
+<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+<link rel="stylesheet" type="text/css" href="simplebar.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="cah.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="jquery-ui.min.css" media="screen" />
 <link href="https://fonts.googleapis.com/css?family=Slabo+27px|Source+Sans+Pro" rel="stylesheet">
@@ -189,12 +191,11 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
       </fieldset>
     </div>
     <div id="tab-global">
-      <div class="log"></div>
+      <div class="log" data-simplebar></div>
       <div id="chatwrapper">
-        <input type="text" class="chat" maxlength="200" aria-label="Type here to chat."
-            data-lpignore="true" />
-          </div>
-        <input type="button" class="chat_submit" value="Send" />
+        <input type="text" class="chat" maxlength="200" aria-label="Type here to chat." data-lpignore="true" />
+      </div>
+      <input type="button" class="chat_submit" value="Send" />
     </div>
   </div>
 </div>

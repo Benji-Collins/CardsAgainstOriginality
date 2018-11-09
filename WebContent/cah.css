@@ -224,6 +224,7 @@ h2,h3,h4 {
   overflow: auto;
   min-height: 43px;
   font-size: 16px;
+  padding: none !important;
 }
 #tab-preferences input[type='button'] {
   float: right;
@@ -387,6 +388,7 @@ h2,h3,h4 {
   font-size: 150%;
   font-weight:bold;
   color: #50fa7b;
+  margin-right: 5px;
 }
 .game_black_card_wrapper {
   width: 232px;
@@ -467,7 +469,7 @@ span.admin {
   width: 250px;
   height: 100%;
   position: absolute;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 .scorecard {
   background: #44475a;
@@ -480,7 +482,7 @@ span.admin {
 }
 .scorecard_status {
   float: right;
-  margin-right: 5px;
+  margin-right: 13px;
 }
 .clear {
   clear: both;
@@ -634,17 +636,4 @@ dfn {
   word-wrap: break-word;
   overflow: hidden;
   outline: none;
-}
-/* For custom scrollbar*/
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
-::-webkit-scrollbar-thumb {
-  background: #888; 
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
 }

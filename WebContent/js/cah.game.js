@@ -51,7 +51,7 @@ cah.Game = function(id) {
   $(".chat_submit", this.chatElement_).click(chatsubmit_click(this.id_, this.chatElement_));
   $(".chat", this.chatElement_).keyup(chat_keyup($(".chat_submit", this.chatElement_)));
   // TODO make it not even copy this in the first place
-  $(".log", this.chatElement_).empty();
+  $(".simplebar-content", this.chatElement_).empty();
 
   /**
    * The element for the game options for this game.
