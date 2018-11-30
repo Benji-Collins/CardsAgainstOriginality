@@ -94,7 +94,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
     }
     else
     {
-      note.innerHTML = "From the guy that brought you SneakySneaky; A new way to waste your time at school!";
+      note.innerHTML = "Do ur work, kid.";
     }
 </script>
 </div>
@@ -102,14 +102,14 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <div id="canvas" class="hide">
   <div id="menubar">
     <div id="menubar_left">
-      <input type="button" id="create_game" class="hide button" value="Create Game" />
+      <input type="button" id="create_game" class="hide" value="Create Game" />
 
-      <input type="button" id="leave_game" class="hide button" value="Leave Game" />
-      <input type="button" id="start_game" class="hide button" value="Start Game" />
-      <input type="button" id="stop_game" class="hide button" value="Stop Game" />
+      <input type="button" id="leave_game" class="hide" value="Leave Game" />
+      <input type="button" id="start_game" class="hide" value="Start Game" />
+      <input type="button" id="stop_game" class="hide" value="Stop Game" />
     </div>
     <div id="menubar_right">
-      <input type="button" id="logout" class="button" value="Log out" />
+      <input type="button" id="logout" value="Log out" />
     </div>
   </div>
   <div id="main">
