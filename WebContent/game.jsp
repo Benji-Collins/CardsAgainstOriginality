@@ -47,7 +47,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
 <script type="text/javascript" src="js/cah.ajax.builder.js"></script>
 <script type="text/javascript" src="js/cah.ajax.handlers.js"></script>
 <script type="text/javascript" src="js/cah.app.js"></script>
-<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simplebar@3.1.0-beta.5/dist/simplebar.min.js"></script>
 <link rel="stylesheet" type="text/css" href="simplebar.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="cah.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="jquery-ui.min.css" media="screen" />
@@ -94,7 +94,7 @@ boolean allowBlankCards = injector.getInstance(Key.get(new TypeLiteral<Boolean>(
     }
     else
     {
-      note.innerHTML = "From the guy that brought you SneakySneaky; A new way to waste your time at school!";
+      note.innerHTML = "Enjoy ;)";
     }
 </script>
 </div>
